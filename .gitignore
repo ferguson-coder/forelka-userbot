@@ -90,3 +90,16 @@ $RECYCLE.BIN/
 *.orig
 .hgignore
 .hg
+
+# 🛠 Внутренние скрипты (не для публикации)
+GITHUB_UPLOAD.md
+clean_for_github.py
+create_backup.py
+forelka-userbot-telethon.zip
+module_config-test.json
+
+# 🔐 Личные данные
+kernel_config.json
+loaded_modules/
+# Персональные папки модулей
+loaded_modules_*

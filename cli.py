@@ -260,6 +260,14 @@ def status_menu(user_id):
         elif choice == "0":
             return
 
+def get_version():
+    """Загружает версию из файла version.txt"""
+    try:
+        with open('version.txt', 'r') as f:
+            return f.read().strip()
+    except:
+        return "1.0.0"
+
 def detailed_status(user_id):
     clear_screen()
     print_header("📊 Подробная информация")
@@ -270,7 +278,7 @@ def detailed_status(user_id):
     python_version = platform.python_version()
     
     # Версия Forelka
-    forelka_version = "1.0.0"
+    forelka_version = get_version()
     
     # Git информация
     git_info = "N/A"
