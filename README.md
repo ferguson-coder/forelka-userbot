@@ -2,7 +2,7 @@
 
 > **Мощный и гибкий Telegram userbot** с модульной архитектурой, инлайн-ботом и расширенной системой конфигурации. Построен на асинхронной библиотеке **Telethon**.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/kirillusha/forelka-userbot-telethon)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/ferguson-coder/forelka-userbot)
 [![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Telethon](https://img.shields.io/badge/telethon-latest-2969ff.svg)](https://docs.telethon.dev/)
@@ -110,8 +110,8 @@ pip install telethon aiosqlite flask pyrogram requests aiohttp
 ### Шаг 1: Клонирование репозитория
 
 ```bash
-git clone https://github.com/kirillusha/forelka-userbot-telethon.git
-cd forelka-userbot-telethon
+git clone https://github.com/ferguson-coder/forelka-userbot.git
+cd forelka-userbot
 ```
 
 ### Шаг 2: Установка зависимостей
@@ -771,7 +771,7 @@ export FORELKA_TUNNEL_VERBOSE=1
 
 ### Официальные ресурсы
 
-- **GitHub репозиторий:** [kirillusha/forelka-userbot-telethon](https://github.com/kirillusha/forelka-userbot-telethon)
+- **GitHub репозиторий:** [ferguson-coder/forelka-userbot](https://github.com/ferguson-coder/forelka-userbot)
 - **Репозиторий модулей:** [kirillusha/forelka-userbot-modules](https://github.com/kirillusha/forelka-userbot-modules)
 - **Документация Telethon:** [docs.telethon.dev](https://docs.telethon.dev/)
 
