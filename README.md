@@ -2,7 +2,7 @@
 
 > **Мощный и гибкий Telegram userbot** с модульной архитектурой, инлайн-ботом и расширенной системой конфигурации. Построен на асинхронной библиотеке **Telethon**.
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/kirillusha/forelka-userbot-telethon)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/ferguson-coder/forelka-userbot)
 [![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Telethon](https://img.shields.io/badge/telethon-latest-2969ff.svg)](https://docs.telethon.dev/)
