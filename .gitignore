@@ -103,3 +103,6 @@ kernel_config.json
 loaded_modules/
 # Персональные папки модулей
 loaded_modules_*
+
+# 📝 Changelog
+CHANGELOG.md

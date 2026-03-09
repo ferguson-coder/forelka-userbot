@@ -3,6 +3,7 @@
 > **Мощный и гибкий Telegram userbot** с модульной архитектурой, инлайн-ботом и расширенной системой конфигурации. Построен на асинхронной библиотеке **Telethon**.
 
 [![Version](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/ferguson-coder/forelka-userbot/beta/version.txt&label=version&color=blue)](https://github.com/ferguson-coder/forelka-userbot)
+[![Changelog](https://img.shields.io/badge/changelog-latest-green.svg)](CHANGELOG.md)
 [![Python](https://img.shields.io/badge/python-3.7+-green.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Telethon](https://img.shields.io/badge/telethon-latest-2969ff.svg)](https://docs.telethon.dev/)
@@ -12,7 +13,7 @@
 ## 📋 Содержание
 
 - [О проекте](#-о-проекте)
-- [Особенности](https://github.com/ferguson-coder/forelka-userbot/blob/beta/README.md#-%D0%BE%D1%81%D0%BE%D0%B1%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D0%B8)
+- [Особенности](#-особенности)
 - [Требования](#-требования)
 - [Установка](#-установка)
 - [Получение API ключей Telegram](#-получение-api-ключей-telegram)
@@ -21,6 +22,7 @@
 - [Модульная система](#-модульная-система)
 - [Конфигурация](#-конфигурация)
 - [CLI управление](#-cli-управление)
+- [Changelog](#-changelog)
 - [Структура проекта](#-структура-проекта)
 - [Безопасность](#-безопасность)
 - [Troubleshooting](#-troubleshooting)
@@ -815,9 +817,31 @@ export FORELKA_TUNNEL_VERBOSE=1
 
 ---
 
+## 📝 Changelog
+
+Ознакомьтесь с полной историей изменений в файле [CHANGELOG.md](CHANGELOG.md).
+
+### Последние изменения (1.1.0)
+
+**Дата:** 2026-03-09
+
+#### Добавлено
+- CLI панель управления — интерактивное управление через терминал
+- version.txt — централизованное управление версией
+- Модуль changelog.py — команда `.changelog` для просмотра истории
+
+#### Изменено
+- main.py, cli.py — версия читается из version.txt
+- README.md — обновлены ссылки на репозиторий
+
+#### Удалено
+- Личные файлы из репозитория (сессии, конфиги, API ключи)
+
+---
+
 <div align="center">
 
-**Forelka Userbot v1.0.0**
+**Forelka Userbot v1.1.0**
 
 [⬆️ Вернуться к началу](#-forelka-userbot)
 
