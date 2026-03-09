@@ -1,0 +1,92 @@
+# ────────────────────────────────────────────────
+# Forelka Userbot - Git Ignore File
+# ────────────────────────────────────────────────
+
+# 🔐 Личные данные и сессии
+*.session
+*.session-journal
+telegram_api-*.json
+kernel_config-*.json
+config-*.json
+forelka_config.db
+
+# 🗑 Временные файлы и бекапы
+forelka_backup_*.zip
+*.pid
+forelka.log
+*.log.bak
+.tmp
+*.temp
+
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 🧪 Виртуальные окружения
+venv/
+env/
+ENV/
+.venv
+
+# 🛠 IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+
+# 📸 Медиа файлы (опционально)
+*.jpg
+*.png
+*.mp4
+*.webp
+photo_*.jpg
+resized_photo_*.jpg
+result*.mp4
+
+# 🌐 Веб
+.flaskenv
+.env
+.env.local
+
+# 📦 Node (если будет использоваться)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# 🍎 macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 🪟 Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# 🔧 Прочее
+*.orig
+.hgignore
+.hg
