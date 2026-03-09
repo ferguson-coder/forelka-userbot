@@ -12,7 +12,7 @@
 ## 📋 Содержание
 
 - [О проекте](#-о-проекта)
-- [Особенности](#-особенности)
+- [Особенности](https://github.com/ferguson-coder/forelka-userbot?tab=readme-ov-file#-%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B5%D0%BD%D0%B8%D0%B5-api-%D0%BA%D0%BB%D1%8E%D1%87%D0%B5%D0%B9-telegram)
 - [Требования](#-требования)
 - [Установка](#-установка)
 - [Получение API ключей Telegram](#-получение-api-ключей-telegram)
