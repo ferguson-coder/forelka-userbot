@@ -112,6 +112,36 @@ class InlineBot:
                 self.kernel.config["inline_bot_username"] = self.username
                 self.kernel.save_config()
 
+                self.kernel.logger.info("Бот создан, настройка аватара...")
+                
+                # Настраиваем avatar через BotFather
+                await self.kernel.client.send_message(botfather, "/setuserpic")
+                await asyncio.sleep(5)
+                await self.kernel.client.send_message(botfather, f"@{bot_username}")
+                await asyncio.sleep(5)
+                
+                # Ищем аватар в папке assets
+                avatar_paths = [
+                    "assets/avatar_inline.jpg",
+                    "assets/avatar_inline.png",
+                    "assets/avatar.jpg",
+                    "assets/avatar.png",
+                ]
+                
+                avatar_path = None
+                for path in avatar_paths:
+                    if os.path.exists(path):
+                        avatar_path = path
+                        break
+                
+                if avatar_path:
+                    await self.kernel.client.send_file(botfather, avatar_path)
+                    self.kernel.logger.info(f"Аватар установлен из {avatar_path}")
+                else:
+                    self.kernel.logger.warning("Аватар не найден (assets/avatar_inline.jpg/png)")
+                
+                await asyncio.sleep(2)
+                
                 self.kernel.logger.info("Перезапуск для применения настроек...")
                 os.execl(sys.executable, sys.executable, *sys.argv)
             else:
