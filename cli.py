@@ -10,8 +10,27 @@ import json
 import time
 import zipfile
 import shutil
+import subprocess
 from datetime import datetime
 from pathlib import Path
+
+
+def setup_git_safe_directory():
+    """Автоматически добавляет текущую директорию в git safe.directory"""
+    try:
+        bot_dir = os.path.abspath(os.path.dirname(__file__))
+        subprocess.run(
+            ['git', 'config', '--global', '--add', 'safe.directory', bot_dir],
+            check=True,
+            capture_output=True,
+            timeout=5
+        )
+    except Exception:
+        pass  # Тихо игнорируем если git не установлен или нет доступа
+
+
+# Вызываем настройку git при старте
+setup_git_safe_directory()
 
 # ────────────────────────────────────────────────
 # Цвета для терминала

@@ -38,6 +38,24 @@ def get_version():
 FORELKA_VERSION = get_version()
 
 
+def setup_git_safe_directory():
+    """Автоматически добавляет текущую директорию в git safe.directory"""
+    try:
+        bot_dir = os.path.abspath(os.path.dirname(__file__))
+        subprocess.run(
+            ['git', 'config', '--global', '--add', 'safe.directory', bot_dir],
+            check=True,
+            capture_output=True,
+            timeout=5
+        )
+    except Exception:
+        pass  # Тихо игнорируем если git не установлен или нет доступа
+
+
+# Вызываем настройку git при старте
+setup_git_safe_directory()
+
+
 def _convert_pyrogram_to_telethon(session_file):
     """Конвертирует Pyrogram .session в Telethon .session (если нужно)."""
     path = session_file if session_file.endswith(".session") else session_file + ".session"
