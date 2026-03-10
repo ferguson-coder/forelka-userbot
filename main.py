@@ -497,7 +497,7 @@ async def setup_management_group(kernel):
         print(f"Ошибка при настройке группы: {e}")
 
 async def add_bot_to_management_group(kernel):
-    """Добавляет инлайн-бота в management группу после его запуска."""
+    """Добавляет инлайн-бота в management группу (megagroup) после его запуска."""
     config_path = f"config-{kernel.client._self_id}.json"
     config = {}
     if os.path.exists(config_path):
@@ -527,28 +527,33 @@ async def add_bot_to_management_group(kernel):
         return
 
     group_id = config["management_group_id"]
-    
+
     try:
+        # Получаем entity бота
+        bot_entity = await kernel.client.get_entity(f"@{kernel.inline_bot.username}")
+
         # Проверяем состоит ли уже бот в группе
         try:
             group_entity = await kernel.client.get_entity(group_id)
-            bot_entity = await kernel.client.get_entity(f"@{kernel.inline_bot.username}")
             
             # Получаем участников группы чтобы проверить есть ли там бот
             participants = await kernel.client.get_participants(group_entity)
             bot_in_group = any(p.user_id == bot_entity.id for p in participants)
-            
+
             if bot_in_group:
                 print("✓ Инлайн-бот уже состоит в management группе.")
                 return
-                
+
         except Exception as e:
             print(f"⚠️ Не удалось проверить участие бота: {e}")
 
-        # Добавляем бота в группу
+        # Конвертируем group_id в положительный для PeerChannel (group_id отрицательный)
+        channel_id = -group_id if group_id < 0 else group_id
+
+        # Добавляем бота в группу используя правильный API для каналов/megagroups
         await kernel.client(InviteToChannelRequest(
-            channel=group_id,
-            users=[kernel.inline_bot.username]
+            channel=PeerChannel(channel_id),
+            users=[bot_entity]
         ))
         print("✓ Инлайн-бот добавлен в management группу.")
 
@@ -566,8 +571,8 @@ async def add_bot_to_management_group(kernel):
             other=True
         )
         await kernel.client(EditAdminRequest(
-            channel=group_id,
-            user_id=kernel.inline_bot.username,
+            channel=PeerChannel(channel_id),
+            user_id=bot_entity.id,
             admin_rights=full_rights,
             rank="Forelka Bot"
         ))
