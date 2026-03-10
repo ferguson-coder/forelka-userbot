@@ -448,6 +448,7 @@ async def edited_handler(event):
     await handler(event)
 
 async def setup_management_group(kernel):
+    """Создаёт management группу без добавления бота (бот добавляется позже)."""
     config_path = f"config-{kernel.client._self_id}.json"
     config = {}
     if os.path.exists(config_path):
@@ -458,10 +459,11 @@ async def setup_management_group(kernel):
             pass
 
     if "management_group_id" in config:
+        print("Management группа уже существует.")
         return
 
     print("Настройка группы управления...")
-    
+
     try:
         group = await kernel.client(CreateChannelRequest(
             title="Forelka Management",
@@ -472,35 +474,7 @@ async def setup_management_group(kernel):
         group_id = -group.chats[0].id
         print(f"Супергруппа создана: {group_id}")
 
-        if hasattr(kernel, 'inline_bot') and kernel.inline_bot and kernel.inline_bot.username:
-            bot_entity = await kernel.client.get_entity(kernel.inline_bot.username)
-            
-            await kernel.client(InviteToChannelRequest(
-                channel=group_id,
-                users=[bot_entity]
-            ))
-            print("Инлайн-бот добавлен в группу.")
-
-            full_rights = ChatAdminRights(
-                post_messages=True,
-                edit_messages=True,
-                delete_messages=True,
-                ban_users=True,
-                invite_users=True,
-                pin_messages=True,
-                add_admins=True,
-                anonymous=False,
-                manage_call=True,
-                other=True
-            )
-            await kernel.client(EditAdminRequest(
-                channel=group_id,
-                user_id=bot_entity.id,
-                admin_rights=full_rights,
-                rank="Forelka Bot"
-            ))
-            print("Инлайн-бот назначен админом со всеми правами.")
-
+        # Создаём топики
         topics = ["Логи", "Команды", "Бекапы", "Мусорка"]
         topic_ids = {}
         for topic_name in topics:
@@ -516,10 +490,96 @@ async def setup_management_group(kernel):
         with open(config_path, "w") as f:
             json.dump(config, f, indent=4)
 
-        print("Группа управления настроена!")
+        print("Группа управления создана!")
+        print("⚠️ Инлайн-бот будет добавлен после запуска...")
 
     except Exception as e:
         print(f"Ошибка при настройке группы: {e}")
+
+async def add_bot_to_management_group(kernel):
+    """Добавляет инлайн-бота в management группу после его запуска."""
+    config_path = f"config-{kernel.client._self_id}.json"
+    config = {}
+    if os.path.exists(config_path):
+        try:
+            with open(config_path, "r") as f:
+                config = json.load(f)
+        except:
+            pass
+
+    # Проверяем что группа уже создана
+    if "management_group_id" not in config:
+        print("Management группа ещё не создана.")
+        return
+
+    # Проверяем что инлайн-бот запущен
+    if not hasattr(kernel, 'inline_bot') or not kernel.inline_bot:
+        print("Инлайн-бот не инициализирован.")
+        return
+
+    if not kernel.inline_bot.username:
+        print("Username бота не установлен (возможно бот ещё не создан).")
+        return
+
+    # Проверяем что bot_client подключён
+    if not kernel.inline_bot.bot_client or not kernel.inline_bot.bot_client.is_connected():
+        print("Bot client не подключён (бот ещё не запущен).")
+        return
+
+    group_id = config["management_group_id"]
+    
+    try:
+        # Проверяем состоит ли уже бот в группе
+        try:
+            group_entity = await kernel.client.get_entity(group_id)
+            bot_entity = await kernel.client.get_entity(f"@{kernel.inline_bot.username}")
+            
+            # Получаем участников группы чтобы проверить есть ли там бот
+            participants = await kernel.client.get_participants(group_entity)
+            bot_in_group = any(p.user_id == bot_entity.id for p in participants)
+            
+            if bot_in_group:
+                print("✓ Инлайн-бот уже состоит в management группе.")
+                return
+                
+        except Exception as e:
+            print(f"⚠️ Не удалось проверить участие бота: {e}")
+
+        # Добавляем бота в группу
+        await kernel.client(InviteToChannelRequest(
+            channel=group_id,
+            users=[kernel.inline_bot.username]
+        ))
+        print("✓ Инлайн-бот добавлен в management группу.")
+
+        # Назначаем бота админом со всеми правами
+        full_rights = ChatAdminRights(
+            post_messages=True,
+            edit_messages=True,
+            delete_messages=True,
+            ban_users=True,
+            invite_users=True,
+            pin_messages=True,
+            add_admins=True,
+            anonymous=False,
+            manage_call=True,
+            other=True
+        )
+        await kernel.client(EditAdminRequest(
+            channel=group_id,
+            user_id=kernel.inline_bot.username,
+            admin_rights=full_rights,
+            rank="Forelka Bot"
+        ))
+        print("✓ Инлайн-бот назначен админом management группы.")
+
+    except Exception as e:
+        print(f"✗ Ошибка при добавлении бота в группу: {e}")
+
+async def retry_add_bot_to_group(kernel):
+    """Команда для ручного добавления бота в management группу."""
+    print("\n🔄 Повторная попытка добавить бота в management группу...")
+    await add_bot_to_management_group(kernel)
 
 # === ИСПРАВЛЕННАЯ ФУНКЦИЯ ЗАГРУЗКИ МОДУЛЕЙ ===
 def load_modules_with_config(client, kernel):
@@ -669,8 +729,15 @@ async def main():
     except Exception as e:
         print(f"[!] Ошибка при регистрации loader: {e}")
 
+    # === ИСПРАВЛЕННЫЙ ПОРЯДОК ВЫЗОВОВ ===
+    # 1. Сначала создаём management группу (без бота)
     await setup_management_group(kernel)
+    
+    # 2. Запускаем инлайн-бота
     await kernel.setup_inline_bot()
+    
+    # 3. Добавляем бота в management группу (теперь бот уже запущен)
+    await add_bot_to_management_group(kernel)
 
     git = "unknown"
     try:
