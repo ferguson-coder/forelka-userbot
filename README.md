@@ -84,11 +84,20 @@
 
 ### Зависимости
 
-Основные пакеты устанавливаются автоматически:
+Проект использует следующие пакеты:
 
-```bash
-pip install telethon aiosqlite flask pyrogram requests aiohttp
-```
+| Пакет | Версия | Назначение |
+|-------|--------|------------|
+| **telethon** | ≥1.34.0 | Основная библиотека для userbot |
+| **cryptg** | ≥0.4.0 | Ускорение шифрования Telethon |
+| **pyrogram** | ≥2.0.108 | Веб-авторизация (webapp.py) |
+| **tgcrypto** | ≥1.2.5 | Ускорение Pyrogram |
+| **flask** | ≥2.3.3 | Веб-сервер авторизации |
+| **aiosqlite** | ≥0.19.0 | Асинхронная SQLite база |
+| **requests** | ≥2.31.0 | HTTP-запросы |
+| **aiohttp** | ≥3.9.0 | Асинхронные HTTP-запросы |
+| **psutil** | ≥5.9.0 | Системная информация |
+| **python-dotenv** | ≥1.0.0 | Поддержка .env файлов |
 
 ### Для Termux (Android)
 
@@ -96,11 +105,8 @@ pip install telethon aiosqlite flask pyrogram requests aiohttp
 # Обновление пакетов
 pkg update && pkg upgrade
 
-# Установка зависимостей
-pkg install python git openssh neofetch
-
-# Установка Python-пакетов
-pip install telethon aiosqlite flask pyrogram requests aiohttp
+# Установка системных зависимостей
+pkg install python git openssh neofetch rust
 ```
 
 > **Note:** На Android может потребоваться предоставление разрешений на хранение файлов.
@@ -119,12 +125,21 @@ cd forelka-userbot
 ### Шаг 2: Установка зависимостей
 
 ```bash
-# Автоматическая установка (если есть requirements.txt)
+# Рекомендуемая установка через requirements.txt
 pip install -r requirements.txt
 
-# Или вручную
-pip install telethon aiosqlite flask pyrogram requests aiohttp
+# Или вручную (не рекомендуется)
+pip install telethon cryptg pyrogram tgcrypto flask aiosqlite requests aiohttp psutil python-dotenv
 ```
+
+> **Tip:** Для изоляции зависимостей рекомендуется использовать виртуальное окружение:
+> ```bash
+> python -m venv venv
+> source venv/bin/activate  # Linux/macOS
+> # или
+> venv\Scripts\activate  # Windows
+> pip install -r requirements.txt
+> ```
 
 ### Шаг 3: Проверка установки
 
@@ -133,7 +148,10 @@ pip install telethon aiosqlite flask pyrogram requests aiohttp
 python --version
 
 # Проверка установленных пакетов
-pip list | grep -E "telethon|aiosqlite|flask"
+pip list | grep -E "telethon|flask|aiosqlite"
+
+# Проверка версий всех зависимостей
+pip freeze | grep -E "telethon|cryptg|pyrogram|flask|aiosqlite|requests|aiohttp|psutil"
 ```
 
 ---
@@ -567,6 +585,7 @@ forelka-userbot-telethon/
 ├── tunnel.py               # Туннелирование (localhost.run)
 ├── Updater.py              # Автообновление
 ├── utils.py                # Вспомогательные утилиты
+├── requirements.txt        # Python зависимости
 │
 ├── modules/                # Системные модули
 │   ├── ping.py             # Проверка задержки
@@ -582,7 +601,9 @@ forelka-userbot-telethon/
 │   ├── accounts.py         # Управление аккаунтами
 │   ├── restart.py          # Перезапуск
 │   ├── terminal.py         # Выполнение команд
-│   └── info.py             # Информация о системе
+│   ├── info.py             # Информация о системе
+│   ├── changelog.py        # История изменений
+│   └── test.py             # Тест конфигурации
 │
 ├── loaded_modules/         # Пользовательские модули
 │   └── ...                 # Загружаемые модули
@@ -592,6 +613,7 @@ forelka-userbot-telethon/
 ├── repos.json              # Репозитории модулей
 ├── forelka_config.db       # База данных *
 ├── forelka.log             # Лог-файл *
+├── .env                    # Переменные окружения (опционально) *
 └── forelka-<user_id>.session  # Сессия Telegram *
 ```
 
@@ -829,10 +851,12 @@ export FORELKA_TUNNEL_VERBOSE=1
 - CLI панель управления — интерактивное управление через терминал
 - version.txt — централизованное управление версией
 - Модуль changelog.py — команда `.changelog` для просмотра истории
+- requirements.txt — полный список Python-зависимостей проекта
 
 #### Изменено
 - main.py, cli.py — версия читается из version.txt
-- README.md — обновлены ссылки на репозиторий
+- README.md — обновлены ссылки на репозиторий и секция установки
+- README.md — добавлена таблица зависимостей с версиями
 
 #### Удалено
 - Личные файлы из репозитория (сессии, конфиги, API ключи)

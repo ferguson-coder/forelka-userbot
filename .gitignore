@@ -75,6 +75,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# 🐍 Python Dependencies (lock файл)
+requirements.txt.lock
+
 # 🍎 macOS
 .DS_Store
 .AppleDouble
